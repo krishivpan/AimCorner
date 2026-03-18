@@ -7,7 +7,7 @@ public class HUDScript : MonoBehaviour
     [SerializeField] GameObject scoreText;
     [SerializeField] GameObject timeText;
     [SerializeField] float timeLeft = 30f;
-    bool timerRunning = false;
+    public bool timerRunning = false;
 
 
     void Start()
