@@ -1,48 +1,57 @@
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Collections;
 
 public class TargetSpawn : MonoBehaviour
 {
-
     public Transform cornerA;
     public Transform cornerB;
     public Transform cornerC;
     public GameObject targetObject;
-    HUDScript HUDScript;
+
+    private HUDScript hudScript;
+    private bool isSpawning = false; // Prevents "Machine Gun" spawning
+
+    void Start()
+    {
+        // Find this once at the start to save performance
+        hudScript = Object.FindFirstObjectByType<HUDScript>();
+    }
 
     void Update()
     {
-        HUDScript = Object.FindFirstObjectByType<HUDScript>();
-        if (HUDScript.timerRunning)
+        // Only start the spawn cycle if the timer is running and we aren't already waiting
+        if (hudScript != null && hudScript.timerRunning && !isSpawning)
         {
-            SpawnObject();
-
+            StartCoroutine(SpawnCycle());
         }
     }
 
-    void SpawnObject()
+    IEnumerator SpawnCycle()
     {
-        // Calculate weights: P = ax + by + cz
+        isSpawning = true; // Lock the coroutine
+
+        // 1. Calculate Position
         Vector3 sideAB = cornerB.position - cornerA.position;
         Vector3 sideAC = cornerC.position - cornerA.position;
-
         float a = Random.value;
         float b = Random.value;
-        float height = Random.Range(2.5f, 9f);
-
-        if (a + b > 1)
-        {
-            a = 1 - a;
-            b = 1 - b;
-        }
+        if (a + b > 1) { a = 1 - a; b = 1 - b; }
 
         Vector3 spawnPosition = cornerA.position + (sideAB * a) + (sideAC * b);
-        spawnPosition.y = height;
+        spawnPosition.y = Random.Range(2.5f, 9f);
 
-        Instantiate(targetObject, spawnPosition, transform.rotation);
-        Invoke(nameof(targetObject), 3.0f);
-        Destroy(targetObject);
+        // 2. Spawn the object
+        GameObject newTarget = Instantiate(targetObject, spawnPosition, transform.rotation);
+
+        // 3. Wait for 1.5 seconds while the object exists
+        yield return new WaitForSeconds(1.5f);
+
+        // 4. Destroy the object AFTER the wait
+        if (newTarget != null)
+        {
+            Destroy(newTarget);
+        }
+
+        isSpawning = false; // Unlock so the next one can spawn
     }
-
 }
