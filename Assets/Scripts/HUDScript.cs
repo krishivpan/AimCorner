@@ -9,15 +9,15 @@ public class HUDScript : MonoBehaviour
     [SerializeField] float timeLeft = 30f;
     public bool timerRunning = false;
 
+    CustomBullet bullet;
+
 
     void Start()
     {
         
         Cursor.visible = true;
 
-        int score = 0;
-
-        scoreText.GetComponent<TMPro.TMP_Text>().text = "Score: " + score;
+        scoreText.GetComponent<TMPro.TMP_Text>().text = "Score: " + bullet.score;
     }
 
     void Update()
@@ -29,6 +29,7 @@ public class HUDScript : MonoBehaviour
 
             if (timeLeft <= 0)
             {
+                bullet.score = 0;
                 timeLeft = 0;
                 timerRunning = false;
                 Debug.Log("Game Over");

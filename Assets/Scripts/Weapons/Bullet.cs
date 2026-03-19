@@ -72,8 +72,7 @@ public class Bullet : MonoBehaviour
         currentBullet.GetComponent<Rigidbody>().AddForce(bulletDirection.normalized * shootForce, ForceMode.Impulse);
         currentBullet.GetComponent<Rigidbody>().AddForce(fpsCam.transform.up * upwardForce, ForceMode.Impulse);
 
-        // Add recoil
-        // playerRigidBody.AddForce(-bulletDirection.normalized * recoilForce, ForceMode.Impulse);
+       
 
         if (muzzleFlash != null)
         {
@@ -81,7 +80,15 @@ public class Bullet : MonoBehaviour
         }
 
         // Invoke resetShot function (if not already invoked), with timeBetweenShooting
-        Invoke("ResetShot", timeBetweenShooting);
+        if (allowInvoke)
+        {
+            Invoke("ResetShot", timeBetweenShooting);
+            allowInvoke = false;
+
+            // Add recoil
+            playerRigidBody.AddForce(-bulletDirection.normalized * recoilForce, ForceMode.Impulse);
+        }
+        
 
     }
 

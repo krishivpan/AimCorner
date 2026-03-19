@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5499754278352277228}
   - component: {fileID: 8870076369606954689}
   - component: {fileID: 3597944049411893235}
+  - component: {fileID: 398741964976456924}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -140,3 +141,23 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &398741964976456924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7303290056415324784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b578a76d959fd46aeb87274df20a9c7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomBullet
+  rb: {fileID: 3597944049411893235}
+  whatIsEnemies:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  bounciness: 0
+  useGravity: 0
+  maxCollisions: 1
+  dieOnTouch: 1
