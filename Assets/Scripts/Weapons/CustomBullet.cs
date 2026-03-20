@@ -16,7 +16,6 @@ public class CustomBullet : MonoBehaviour
     public int maxCollisions;
     public bool dieOnTouch;
 
-    public int score = 0;
 
     int collisions;
     PhysicsMaterial physics_mat;
@@ -40,12 +39,18 @@ public class CustomBullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         collisions++;
-        Die();
-
         if (collision.collider.CompareTag("Target"))
         {
-            score++;
+            HUDScript hud = FindFirstObjectByType<HUDScript>();
+            if (hud != null)
+            {
+                hud.AddScore();
+            }
         }
+        Debug.Log("Bullet hit: " + collision.gameObject.name + " with tag: " + collision.gameObject.tag);
+
+
+        Die();
 
        
     }
